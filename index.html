@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>中美关税博弈交互式仿真系统 - 博弈论课程大作业</title>
+
+    <!-- 库 -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.2/dist/echarts.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+
+    <!-- 使用外部样式文件（请确保 style.css 存在于同一目录） -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <!-- 顶部导航 -->
+        <header class="header">
+            <div class="container">
+                <h1><i class="fas fa-globe-americas"></i> 中美关税博弈交互式仿真系统</h1>
+                <p class="subtitle">博弈论课程大作业 - 基于2025年真实数据构建</p>
+            </div>
+        </header>
+
+        <!-- 主内容区 -->
+        <div class="container main-container">
+            <!-- 侧边栏导航 -->
+            <nav class="sidebar">
+                <ul>
+                    <li 
+                        v-for="(page, index) in pages" 
+                        :key="index"
+                        :class="{ active: currentPage === page.id }"
+                        @click="currentPage = page.id"
+                    >
+                        <i :class="page.icon"></i> {{ page.name }}
+                    </li>
+                </ul>
+            </nav>
+
+            <!-- 内容区域 -->
+            <main class="content">
+                <!-- 系统概览 -->
+                <section v-if="currentPage === 'overview'" class="page-section">
+                    <h2><i class="fas fa-tachometer-alt"></i> 系统概览</h2>
+                    <div class="data-highlights">
+                        <h3>基于真实数据的关键发现</h3>
+                        <div class="highlight-item">
+                            <span>最大关税冲突期：</span>
+                            <strong>2025年4月 (美方145%，中方125%)</strong>
+                        </div>
+                        <div class="highlight-item">
+                            <span>GDP累计冲击峰值：</span>
+                            <strong>美国-783亿美元，中国-700亿美元</strong>
+                        </div>
+                        <div class="highlight-item">
+                            <span>股市最大跌幅：</span>
+                            <strong>纳斯达克-8.23%，上证指数-2.94%</strong>
+                        </div>
+                        <div class="highlight-item">
+                            <span>贸易顺差最大降幅：</span>
+                            <strong>从31737.84亿降至9505.08亿</strong>
+                        </div>
+                    </div>
+
+                    <div class="overview-grid">
+                        <div class="overview-card">
+                            <h3>项目介绍</h3>
+                            <p><strong>中美关税博弈交互式仿真系统</strong>是我们博弈论课程的大作业项目，基于2025年真实贸易数据构建，完整展示了：</p>
+                            <ul>
+                                <li><i class="fas fa-fist-raised"></i> <strong>静态博弈分析</strong>：囚徒困境矩阵与纳什均衡</li>
+                                <li><i class="fas fa-sync-alt"></i> <strong>动态博弈仿真</strong>：三阶段扩展式博弈树</li>
+                                <li><i class="fas fa-dice"></i> <strong>混合策略计算</strong>：概率化策略与期望收益</li>
+                                <li><i class="fas fa-sliders-h"></i> <strong>情景模拟器</strong>：预设情景与自定义参数</li>
+                                <li><i class="fas fa-robot"></i> <strong>AI策略推荐</strong>：基于历史数据的智能建议</li>
+                            </ul>
+                        </div>
+
+                        <div class="overview-card">
+                            <h3>关键经济指标</h3>
+                            <div class="metrics-grid">
+                                <div class="metric">
+                                    <div class="metric-value">31737.84亿</div>
+                                    <div class="metric-label">贸易顺差峰值 <span class="metric-change negative">-70%</span></div>
+                                </div>
+                                <div class="metric">
+                                    <div class="metric-value">145%</div>
+                                    <div class="metric-label">最高关税 <span class="metric-change negative">+135%</span></div>
+                                </div>
+                                <div class="metric">
+                                    <div class="metric-value">↓783亿</div>
+                                    <div class="metric-label">美GDP冲击 <span class="metric-change negative">显著</span></div>
+                                </div>
+                                <div class="metric">
+                                    <div class="metric-value">-8.23%</div>
+                                    <div class="metric-label">纳指跌幅 <span class="metric-change negative">最大</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="quick-start">
+                        <h3>使用指南</h3>
+                        <div class="steps">
+                            <div class="step">
+                                <div class="step-number">1</div>
+                                <p>选择左侧导航菜单</p>
+                            </div>
+                            <div class="step">
+                                <div class="step-number">2</div>
+                                <p>调整参数滑块观察变化</p>
+                            </div>
+                            <div class="step">
+                                <div class="step-number">3</div>
+                                <p>查看图表和分析结果</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="project-info">
+                        <h3>项目信息</h3>
+                        <div class="info-grid">
+                            <div class="info-item">
+                                <strong>课程名称：</strong> 博弈论
+                            </div>
+                            <div class="info-item">
+                                <strong>小组成员：</strong> 白浩矣 李家同 申蓬 袁龙涛 自才榕 （按姓氏首字母排序）
+                            </div>
+                            <div class="info-item">
+                                <strong>指导教师：</strong> 石冠群老师
+                            </div>
+                            <div class="info-item">
+                                <strong>提交日期：</strong> 2025年11月20日
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 静态博弈分析 -->
+                <section v-if="currentPage === 'static'" class="page-section">
+                    <h2><i class="fas fa-fist-raised"></i> 静态博弈分析 - 囚徒困境</h2>
+                    <div class="theory-explanation">
+                        <h3>理论背景</h3>
+                        <p>根据《THE ECONOMIC FALLOUT OF THE US-CHINA TRADE WAR》研究，关税每增加1单位，美国GDP下降5.801单位，中国GDP下降5.188单位。基于此研究和实际关税数据，我们构建了中美关税博弈的囚徒困境模型。</p>
+                    </div>
+
+                    <div class="controls-grid">
+                        <div class="control-group">
+                            <h3>收益矩阵调整</h3>
+                            <div class="slider-container">
+                                <label>合作收益 (R): {{ cooperationReward }}</label>
+                                <input type="range" min="5" max="10" v-model.number="cooperationReward" class="slider">
+                            </div>
+                            <div class="slider-container">
+                                <label>背叛诱惑 (T): {{ temptation }}</label>
+                                <input type="range" min="6" max="10" v-model.number="temptation" class="slider">
+                            </div>
+                            <div class="slider-container">
+                                <label>背叛惩罚 (P): {{ punishment }}</label>
+                                <input type="range" min="1" max="5" v-model.number="punishment" class="slider">
+                            </div>
+                            <div class="slider-container">
+                                <label>被骗收益 (S): {{ sucker }}</label>
+                                <input type="range" min="1" max="4" v-model.number="sucker" class="slider">
+                            </div>
+                        </div>
+
+                        <div class="control-group">
+                            <h3>权重设置</h3>
+                            <div class="slider-container">
+                                <label>GDP权重: {{ gdpWeight.toFixed(1) }}</label>
+                                <input type="range" min="0" max="10" v-model.number="gdpWeight" class="slider">
+                            </div>
+                            <div class="slider-container">
+                                <label>贸易权重: {{ tradeWeight.toFixed(1) }}</label>
+                                <input type="range" min="0" max="10" v-model.number="tradeWeight" class="slider">
+                            </div>
+                            <div class="slider-container">
+                                <label>股市权重: {{ stockWeight.toFixed(1) }}</label>
+                                <input type="range" min="0" max="10" v-model.number="stockWeight" class="slider">
+                            </div>
+
+                            <div v-if="totalWeight !== 10" class="warning">
+                                <i class="fas fa-exclamation-triangle"></i> 权重总和为{{ totalWeight.toFixed(1) }}，建议调整为10.0
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="matrix-section">
+                        <h3>收益矩阵</h3>
+                        <div class="matrix-container">
+                            <table class="payoff-matrix">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th colspan="2">中方策略</th>
+                                    </tr>
+                                    <tr>
+                                        <th>美方策略</th>
+                                        <th>合作</th>
+                                        <th>对抗</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td><strong>合作</strong></td>
+                                        <td :class="{ 'nash-equilibrium': isNashEquilibrium('合作', '合作') }">
+                                            <div>美方: {{ calculatePayoff('合作', '合作')[0].toFixed(1) }}</div>
+                                            <div>中方: {{ calculatePayoff('合作', '合作')[1].toFixed(1) }}</div>
+                                        </td>
+                                        <td :class="{ 'nash-equilibrium': isNashEquilibrium('合作', '对抗') }">
+                                            <div>美方: {{ calculatePayoff('合作', '对抗')[0].toFixed(1) }}</div>
+                                            <div>中方: {{ calculatePayoff('合作', '对抗')[1].toFixed(1) }}</div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td><strong>对抗</strong></td>
+                                        <td :class="{ 'nash-equilibrium': isNashEquilibrium('对抗', '合作') }">
+                                            <div>美方: {{ calculatePayoff('对抗', '合作')[0].toFixed(1) }}</div>
+                                            <div>中方: {{ calculatePayoff('对抗', '合作')[1].toFixed(1) }}</div>
+                                        </td>
+                                        <td :class="{ 'nash-equilibrium': isNashEquilibrium('对抗', '对抗') }">
+                                            <div>美方: {{ calculatePayoff('对抗', '对抗')[0].toFixed(1) }}</div>
+                                            <div>中方: {{ calculatePayoff('对抗', '对抗')[1].toFixed(1) }}</div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="analysis-section">
+                        <h3>纳什均衡分析</h3>
+                        <div class="equilibrium-results">
+                            <div v-for="(eq, index) in nashEquilibria" :key="index" class="equilibrium">
+                                <i class="fas fa-bullseye"></i>
+                                <span>发现纳什均衡：美方{{ eq[0] }} + 中方{{ eq[1] }}，收益：美方{{ calculatePayoff(eq[0], eq[1])[0].toFixed(1) }}，中方{{ calculatePayoff(eq[0], eq[1])[1].toFixed(1) }}</span>
+                            </div>
+                            <div v-if="nashEquilibria.length === 0" class="no-equilibrium">
+                                <i class="fas fa-exclamation-circle"></i> 未找到纯策略纳什均衡
+                            </div>
+                        </div>
+
+                        <div class="insight">
+                            <h4>基于真实数据的博弈洞察</h4>
+                            <p>根据2025年实际数据，在4月的高关税冲突期（美方145%，中方125%），双方GDP累计冲击达到峰值（美国-783亿美元，中国-700亿美元），纳斯达克指数下跌8.23%，贸易顺差从31737.84亿大幅降至9505.08亿，验证了囚徒困境中"个体理性导致集体非理性"的理论预测。</p>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 动态博弈仿真 -->
+                <section v-if="currentPage === 'dynamic'" class="page-section">
+                    <h2><i class="fas fa-sync-alt"></i> 动态博弈仿真 - 三阶段模型</h2>
+
+                    <div class="stage-selector">
+                        <h3>基于真实数据的博弈阶段</h3>
+                        <div class="stage-options">
+                            <label 
+                                v-for="(stage, index) in stages" 
+                                :key="index"
+                                :class="{ active: selectedStage === stage.id }"
+                            >
+                                <input 
+                                    type="radio" 
+                                    :value="stage.id" 
+                                    v-model="selectedStage"
+                                >
+                                {{ stage.name }}
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="data-highlights">
+                        <h3>阶段关键数据</h3>
+                        <div v-if="selectedStage === 'conflict'" class="highlight-item">
+                            <span>关税峰值：</span>
+                            <strong>美方145%，中方125% (4月)</strong>
+                        </div>
+                        <div v-if="selectedStage === 'conflict'" class="highlight-item">
+                            <span>GDP冲击：</span>
+                            <strong>美国-783亿美元，中国-700亿美元</strong>
+                        </div>
+                        <div v-if="selectedStage === 'conflict'" class="highlight-item">
+                            <span>股市表现：</span>
+                            <strong>纳斯达克-8.23%，上证指数-1.38%</strong>
+                        </div>
+
+                        <div v-if="selectedStage === 'cooling'" class="highlight-item">
+                            <span>关税下降：</span>
+                            <strong>美方54%→10%，中方34%→10% (5月)</strong>
+                        </div>
+                        <div v-if="selectedStage === 'cooling'" class="highlight-item">
+                            <span>GDP恢复：</span>
+                            <strong>累计冲击归零</strong>
+                        </div>
+                        <div v-if="selectedStage === 'cooling'" class="highlight-item">
+                            <span>股市反弹：</span>
+                            <strong>纳斯达克+9.32%，上证指数+2.09%</strong>
+                        </div>
+
+                        <div v-if="selectedStage === 'buffer'" class="highlight-item">
+                            <span>稳定关税：</span>
+                            <strong>双方维持10% (11月)</strong>
+                        </div>
+                        <div v-if="selectedStage === 'buffer'" class="highlight-item">
+                            <span>经济稳定：</span>
+                            <strong>GDP冲击接近零</strong>
+                        </div>
+                        <div v-if="selectedStage === 'buffer'" class="highlight-item">
+                            <span>市场平稳：</span>
+                            <strong>股市波动收窄</strong>
+                        </div>
+                    </div>
+
+                    <div class="game-tree-section">
+                        <h3>博弈树可视化</h3>
+
+                        <div class="interaction-guide">
+                            <div class="guide-header">
+                                <i class="fas fa-info-circle"></i>
+                                <span>交互指南</span>
+                            </div>
+                            <div class="guide-content">
+                                <div class="guide-item">
+                                    <i class="fas fa-mouse-pointer"></i>
+                                    <span>点击节点展开/折叠子树</span>
+                                </div>
+                                <div class="guide-item">
+                                    <i class="fas fa-arrows-alt"></i>
+                                    <span>拖拽移动视图</span>
+                                </div>
+                                <div class="guide-item">
+                                    <i class="fas fa-search-plus"></i>
+                                    <span>滚轮缩放</span>
+                                </div>
+                                <div class="guide-item">
+                                    <i class="fas fa-hand-point-up"></i>
+                                    <span>悬停查看详情</span>
+                                </div>
+                            </div>
+                            <div class="color-legend">
+                                <div class="legend-title">颜色图例：</div>
+                                <div class="legend-items">
+                                    <span class="legend-item"><i class="fas fa-square" style="color: #ff6b6b;"></i> 对抗策略</span>
+                                    <span class="legend-item"><i class="fas fa-square" style="color: #4ecdc4;"></i> 合作策略</span>
+                                    <span class="legend-item"><i class="fas fa-square" style="color: #87d068;"></i> 最优结果</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="game-tree-chart" class="chart-container"></div>
+                    </div>
+
+                    <div class="backward-induction">
+                        <h3>后向归纳分析</h3>
+                        <div class="induction-steps">
+                            <div class="step">
+                                <div class="step-header">
+                                    <span class="step-number">1</span>
+                                    <span class="step-title">终局阶段 (11月)</span>
+                                </div>
+                                <div class="step-content">
+                                    双方选择(缓冲, 开放)，关税维持10%/10%，GDP冲击归零，收益(10,10)
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-header">
+                                    <span class="step-number">2</span>
+                                    <span class="step-title">中间阶段 (5月)</span>
+                                </div>
+                                <div class="step-content">
+                                    预判终局，选择(妥协, 让步)，关税降至10%/10%，GDP冲击归零，收益(8,8)
+                                </div>
+                            </div>
+                            <div class="step">
+                                <div class="step-header">
+                                    <span class="step-number">3</span>
+                                    <span class="step-title">初始阶段 (2-4月)</span>
+                                </div>
+                                <div class="step-content">
+                                    为获谈判筹码，选择(施压, 反制)，关税升至125%/145%，GDP冲击-783/-700亿美元，收益(3,3)
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="optimal-path">
+                            <i class="fas fa-route"></i>
+                            <strong>最优路径：</strong> 施压 → 反制 → 妥协 → 让步 → 缓冲 → 开放
+                        </div>
+                    </div>
+
+                    <div class="path-comparison">
+                        <h3>不同路径收益对比</h3>
+                        <div id="path-comparison-chart" class="chart-container"></div>
+                    </div>
+                </section>
+
+                <!-- 混合策略计算 -->
+                <section v-if="currentPage === 'mixed'" class="page-section">
+                    <h2><i class="fas fa-dice"></i> 混合策略计算 - 概率化决策</h2>
+
+                    <div class="mixed-controls">
+                        <div class="mixed-inputs">
+                            <h3>混合策略参数</h3>
+                            <div class="slider-container">
+                                <label>美方选择合作概率 (p): {{ (pUS).toFixed(0) }}%</label>
+                                <input type="range" min="0" max="100" v-model.number="pUS" class="slider">
+                            </div>
+                            <div class="slider-container">
+                                <label>中方选择合作概率 (q): {{ (pCN).toFixed(0) }}%</label>
+                                <input type="range" min="0" max="100" v-model.number="pCN" class="slider">
+                            </div>
+
+                            <div class="expected-payoffs">
+                                <h3>期望收益</h3>
+                                <div class="payoff-metrics">
+                                    <div class="payoff-metric">
+                                        <div class="payoff-value">{{ expectedPayoffUS.toFixed(2) }}</div>
+                                        <div class="payoff-label">美方期望收益</div>
+                                    </div>
+                                    <div class="payoff-metric">
+                                        <div class="payoff-value">{{ expectedPayoffCN.toFixed(2) }}</div>
+                                        <div class="payoff-label">中方期望收益</div>
+                                    </div>
+                                    <div class="payoff-metric">
+                                        <div class="payoff-value">{{ totalWelfare.toFixed(2) }}</div>
+                                        <div class="payoff-label">社会总福利</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="mixed-equilibrium">
+                            <h3>混合策略均衡</h3>
+                            <div class="equilibrium-info">
+                                <p><i class="fas fa-calculator"></i> <strong>理论混合策略均衡：</strong></p>
+                                <ul>
+                                    <li>美方合作概率: {{ (mixedEquilibrium.p * 100).toFixed(0) }}%</li>
+                                    <li>中方合作概率: {{ (mixedEquilibrium.q * 100).toFixed(0) }}%</li>
+                                </ul>
+                            </div>
+
+                            <div id="mixed-strategy-chart" class="chart-container"></div>
+                        </div>
+                    </div>
+
+                    <div class="sensitivity-analysis">
+                        <h3>敏感性分析</h3>
+                        <div class="sensitivity-controls">
+                            <div class="slider-container">
+                                <label>美方合作概率变化范围: {{ sensitivityRange[0] }}% - {{ sensitivityRange[1] }}%</label>
+                                <input type="range" min="0" max="100" v-model.number="sensitivityRange[0]" class="slider">
+                                <input type="range" min="0" max="100" v-model.number="sensitivityRange[1]" class="slider">
+                            </div>
+                        </div>
+                        <div id="sensitivity-chart" class="chart-container"></div>
+                    </div>
+                </section>
+
+                <!-- 情景模拟器 -->
+                <section v-if="currentPage === 'scenario'" class="page-section">
+                    <h2><i class="fas fa-sliders-h"></i> 情景模拟器 - 预设与自定义</h2>
+
+                    <div class="scenario-selector">
+                        <h3>选择预设情景</h3>
+                        <div class="scenario-options">
+                            <div 
+                                v-for="scenario in scenarios" 
+                                :key="scenario.id"
+                                class="scenario-card"
+                                :class="{ active: selectedScenario === scenario.id }"
+                                @click="selectScenario(scenario.id)"
+                            >
+                                <div class="scenario-icon">
+                                    <i :class="scenario.icon"></i>
+                                </div>
+                                <div class="scenario-content">
+                                    <h4>{{ scenario.name }}</h4>
+                                    <p>{{ scenario.description }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div v-if="selectedScenario" class="scenario-panel" :class="currentScenarioData.panelClass">
+                        <h3><i :class="currentScenarioData.icon"></i> {{ currentScenarioData.title }}</h3>
+
+                        <div class="scenario-metrics">
+                            <div v-for="metric in currentScenarioData.metrics" :key="metric.label" class="scenario-metric">
+                                <div class="metric-value">{{ metric.value }}</div>
+                                <div class="metric-label">
+                                    {{ metric.label }}
+                                    <span v-if="metric.change" class="metric-change" :class="metric.changeType">
+                                        {{ metric.change }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="scenario-data">
+                            <h4>{{ currentScenarioData.tableTitle }}</h4>
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>指标项</th>
+                                        <th>美方影响</th>
+                                        <th>中方影响</th>
+                                        <th>变化趋势</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr v-for="item in currentScenarioData.tableData" :key="item.indicator">
+                                        <td>{{ item.indicator }}</td>
+                                        <td>{{ item.usImpact }}</td>
+                                        <td>{{ item.cnImpact }}</td>
+                                        <td>
+                                            <span class="trend" :class="item.trend">
+                                                {{ getTrendText(item.trend) }}
+                                            </span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div v-if="selectedScenario === 'buffer'" class="scenario-data">
+                            <h4>缓冲期长期影响预测</h4>
+                            <div id="long-term-chart" class="chart-container"></div>
+                        </div>
+                    </div>
+
+                    <div class="custom-controls">
+                        <h3><i class="fas fa-cog"></i> 自定义情景参数</h3>
+                        <div class="control-columns">
+                            <div class="control-column">
+                                <div class="select-container">
+                                    <label for="us-tariff">美方关税水平</label>
+                                    <select id="us-tariff" v-model.number="customParams.usTariff">
+                                        <option :value="10">10% (低位)</option>
+                                        <option :value="25">25% (中位)</option>
+                                        <option :value="45">45% (高位)</option>
+                                        <option :value="65">65% (极高)</option>
+                                        <option :value="145">145% (峰值)</option>
+                                    </select>
+                                </div>
+                                <div class="select-container">
+                                    <label for="cn-tariff">中方反制关税</label>
+                                    <select id="cn-tariff" v-model.number="customParams.cnTariff">
+                                        <option :value="10">10% (低位)</option>
+                                        <option :value="20">20% (中位)</option>
+                                        <option :value="35">35% (高位)</option>
+                                        <option :value="55">55% (极高)</option>
+                                        <option :value="125">125% (峰值)</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="control-column">
+                                <div class="select-container">
+                                    <label for="duration">冲突持续时间</label>
+                                    <select id="duration" v-model.number="customParams.duration">
+                                        <option :value="1">1个月 (短期)</option>
+                                        <option :value="3">3个月 (中期)</option>
+                                        <option :value="6">6个月 (长期)</option>
+                                        <option :value="12">12个月 (超长期)</option>
+                                    </select>
+                                </div>
+                                <div class="select-container">
+                                    <label for="cooperation">合作可能性</label>
+                                    <select id="cooperation" v-model.number="customParams.cooperation">
+                                        <option :value="10">10% (极低)</option>
+                                        <option :value="30">30% (较低)</option>
+                                        <option :value="50">50% (中等)</option>
+                                        <option :value="70">70% (较高)</option>
+                                        <option :value="90">90% (极高)</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="custom-analysis">
+                            <h4>自定义情景分析结果</h4>
+                            <div class="score-metric">
+                                <div class="score-value">{{ customScore }}</div>
+                                <div class="score-label">综合风险评分 (0-100分，分数越低风险越高)</div>
+                            </div>
+                            <div class="recommendation" :class="getRecommendationClass(customScore)">
+                                {{ getRecommendationText(customScore) }}
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- AI策略推荐 -->
+                <section v-if="currentPage === 'ai'" class="page-section">
+                    <h2><i class="fas fa-robot"></i> AI策略推荐 - 智能分析</h2>
+
+                    <div class="ai-assessment">
+                        <h3>当前状态评估</h3>
+                        <div class="assessment-grid">
+                            <div class="control-group">
+                                <h4>经济指标</h4>
+                                <div class="slider-container">
+                                    <label>当前关税水平(%): {{ currentTariff }}</label>
+                                    <input type="range" min="0" max="150" v-model.number="currentTariff" class="slider">
+                                </div>
+                                <div class="slider-container">
+                                    <label>政治压力: {{ politicalPressure }}</label>
+                                    <input type="range" min="0" max="100" v-model.number="politicalPressure" class="slider">
+                                </div>
+                                <div class="slider-container">
+                                    <label>经济增长需求: {{ economicGrowth }}</label>
+                                    <input type="range" min="0" max="100" v-model.number="economicGrowth" class="slider">
+                                </div>
+                            </div>
+
+                            <div class="control-group">
+                                <h4>政策环境</h4>
+                                <div class="slider-container">
+                                    <label>技术依赖度: {{ techDependency }}</label>
+                                    <input type="range" min="0" max="100" v-model.number="techDependency" class="slider">
+                                </div>
+                                <div class="slider-container">
+                                    <label>谈判筹码: {{ negotiationLeverage }}</label>
+                                    <input type="range" min="0" max="100" v-model.number="negotiationLeverage" class="slider">
+                                </div>
+                                <div class="slider-container">
+                                    <label>国际支持度: {{ internationalSupport }}</label>
+                                    <input type="range" min="0" max="100" v-model.number="internationalSupport" class="slider">
+                                </div>
+                            </div>
+                        </div>
+
+                        <button @click="generateAIRecommendation" class="ai-button">
+                            <i class="fas fa-sync-alt"></i> 生成AI策略推荐
+                        </button>
+
+                        <div v-if="aiRecommendation" class="ai-results">
+                            <div class="recommendation-header" :class="aiRecommendation.type">
+                                <h3><i :class="aiRecommendation.icon"></i> {{ aiRecommendation.strategy }}</h3>
+                                <div class="confidence">置信度: {{ aiRecommendation.confidence }}</div>
+                            </div>
+                            <div class="recommendation-content">
+                                <div class="analysis-columns">
+                                    <div class="analysis-column">
+                                        <h4>策略分析</h4>
+                                        <div class="reasoning">
+                                            <p v-for="(reason, index) in aiRecommendation.reasoning" :key="index">{{ reason }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="analysis-column">
+                                        <h4>具体行动建议</h4>
+                                        <ul class="action-list">
+                                            <li v-for="(action, index) in aiRecommendation.actions" :key="index">
+                                                {{ index + 1 }}. {{ action }}
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <div class="ai-metrics">
+                                    <h4>AI分析指标</h4>
+                                    <div id="ai-metrics-chart" class="chart-container"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- 页脚 -->
+                <footer class="footer">
+                    <div class="container">
+                        <p>中美关税博弈交互式仿真系统 | 博弈论课程大作业 | 基于2025年真实数据构建</p>
+                        <p>数据来源：关税变化数据、GDP影响、CPI指数、股市数据、贸易差额数据</p>
+                    </div>
+                </footer>
+            </main>
+        </div>
+    </div>
+
+    <!-- 外部脚本 -->
+    <script src="script.js"></script>
+</body>
+</html>
